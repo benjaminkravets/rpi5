@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "gpiod.h": "c",
+        "pigpiod_if2.h": "c",
+        "spidev.h": "c"
+    }
+}
