@@ -3,21 +3,29 @@
 #include <linux/init.h>
 #include <linux/proc_fs.h>
 
+#define USER_DATA_SIZE 512
+
 static struct proc_dir_entry *gpio_proc_entry = NULL;
+static char user_write_data[USER_DATA_SIZE];
 
 ssize_t gpio_proc_read(struct file *,
-                       char __user *,       //user input data
+                       char __user * user,       //user input data
                        size_t,              //size of read
                        loff_t *)
 {
     printk("module read \r\n");
-    copy_
+    copy_to_user(user, "Hello Universe\n", 15);
 
-    return 0;
+
+    return 15;
 }
 
-ssize_t gpio_proc_write(struct file *, const char __user *, size_t, loff_t *)
+ssize_t gpio_proc_write(struct file *, 
+                        const char __user *, 
+                        size_t, 
+                        loff_t *)
 {
+    //memset(user_write_data, 0, USER_DATA_SIZE);
     printk("module write \r\n");
 
     return 0;
@@ -37,6 +45,7 @@ static int __init module_entry(void)
 
 static void __exit module_end(void)
 {
+    proc_remove(gpio_proc_entry);
     printk("module exit \r\n");
 }
 
